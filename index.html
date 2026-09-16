@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0b0710">
+<title>Happy Birthday Jyoti ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<style>
+:root{
+  --bg:#0b0710;
+  --pink:#ff4f91;
+  --rose:#ff7eaa;
+  --gold:#ffd58a;
+  --cream:#fff8f2;
+  --muted:#ddd0d8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:#fff}
+body{
+  font-family:Inter,Arial,sans-serif;
+  overflow-x:hidden;
+}
+h1,h2,h3,.serif{font-family:"Playfair Display",Georgia,serif}
+#bg{position:fixed;inset:0;z-index:-5;background:#0b0710;overflow:hidden}
+.aurora{
+  position:absolute;inset:-25%;
+  background:
+    radial-gradient(circle at 18% 25%,hsla(333,70%,55%,.28),transparent 28%),
+    radial-gradient(circle at 78% 25%,hsla(282,82%,54%,.20),transparent 30%),
+    radial-gradient(circle at 75% 78%,hsla(210,89%,60%,.18),transparent 30%),
+    radial-gradient(circle at 25% 78%,hsla(35,90%,60%,.15),transparent 30%);
+  filter:blur(55px);
+  animation:breath 15s ease-in-out infinite alternate;
+}
+@keyframes breath{
+  0%{transform:translate3d(-3%,-2%,0) scale(1)}
+  50%{transform:translate3d(4%,3%,0) scale(1.08)}
+  100%{transform:translate3d(-1%,7%,0) scale(1.03)}
+}
+#three{position:fixed;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none}
+.progress-shell{
+  position:fixed;top:15px;left:50%;transform:translateX(-50%);
+  width:min(430px,78vw);height:5px;border-radius:99px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);
+  overflow:hidden;z-index:100;backdrop-filter:blur(10px)
+}
+#progress{height:100%;width:20%;background:linear-gradient(90deg,#ff78ab,#ff315d);transition:width .7s ease;box-shadow:0 0 18px rgba(255,80,140,.7)}
+#app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:60px 14px 35px}
+.step{display:none;width:min(920px,100%)}
+.step.active{display:block}
+.card{
+  position:relative;overflow:hidden;padding:clamp(23px,5vw,54px);
+  border-radius:30px;
+  background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
+}
+.card:before{
+  content:"";position:absolute;width:260px;height:260px;border-radius:50%;
+  background:rgba(255,74,143,.09);filter:blur(35px);right:-100px;top:-100px;pointer-events:none
+}
+.inner{position:relative;z-index:2;text-align:center}
+.kicker{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:#ffc4d9;margin-bottom:12px}
+.title{
+  font-size:clamp(2.25rem,7vw,5.3rem);line-height:1.02;margin:0 0 18px;
+  background:linear-gradient(110deg,#fff,#ffd5e5,#ff78ab,#fff);
+  background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite
+}
+@keyframes shine{to{background-position:250% center}}
+.lead{max-width:690px;margin:auto;color:var(--muted);font-size:clamp(1rem,2.4vw,1.18rem);line-height:1.8}
+.name{font-family:"Playfair Display",serif;color:#ffe0eb;font-size:clamp(1.35rem,4vw,2rem);margin-bottom:13px}
+.big-emoji{font-size:clamp(4rem,13vw,7rem);line-height:1;margin-bottom:20px;display:inline-block;filter:drop-shadow(0 0 22px rgba(255,70,130,.5));animation:beat 1.8s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.07)}}
+.btn{
+  appearance:none;border:0;cursor:pointer;margin-top:28px;padding:14px 27px;border-radius:999px;
+  color:#fff;font-weight:700;font-size:1rem;background:linear-gradient(135deg,#ff67a0,#ff315d);
+  box-shadow:0 12px 35px rgba(255,49,93,.3),0 0 25px rgba(255,90,150,.18);
+  transition:.25s ease
+}
+.btn:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 18px 45px rgba(255,49,93,.45),0 0 36px rgba(255,90,150,.32)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn:disabled{opacity:0;pointer-events:none}
+.photo-stage{
+  position:relative;width:min(430px,88vw);height:min(480px,102vw);margin:25px auto 18px;
+  display:grid;place-items:center;perspective:1100px
+}
+.photo{
+  position:absolute;width:min(350px,74vw);height:min(390px,83vw);
+  object-fit:cover;border-radius:24px;border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 28px 65px rgba(0,0,0,.48),0 0 35px rgba(255,70,140,.14);
+  opacity:0;visibility:hidden;will-change:transform,opacity
+}
+.photo.show{opacity:1;visibility:visible}
+.photo.polaroid{background:#fff;padding:10px 10px 38px;border-radius:2px;object-fit:cover;box-shadow:0 25px 55px rgba(0,0,0,.5)}
+.photo.polaroid:after{content:"A little memory ❤️";position:absolute;bottom:8px;left:0;right:0;color:#222;font:600 15px "Playfair Display",serif;text-align:center}
+.photo.circle{border-radius:50%;width:min(310px,67vw);height:min(310px,67vw);border:5px solid rgba(255,255,255,.25)}
+.photo.frame{border-radius:12px;border:12px solid #fff;box-shadow:0 22px 60px rgba(0,0,0,.55)}
+.photo-card{
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  padding:8px 14px;border-radius:99px;background:rgba(0,0,0,.5);backdrop-filter:blur(12px);
+  font-size:.78rem;color:#fff;z-index:4;white-space:nowrap
+}
+.memory-note{margin:0 auto;color:#ffcbdc;font-size:.95rem}
+.balloons{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+.balloon{position:absolute;bottom:-140px;width:54px;height:68px;border-radius:50% 50% 45% 45%;opacity:.85;filter:drop-shadow(0 8px 12px rgba(0,0,0,.2))}
+.balloon:after{content:"";position:absolute;left:50%;top:65px;width:1px;height:120px;background:rgba(255,255,255,.35)}
+.balloon:before{content:"";position:absolute;bottom:-5px;left:22px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:9px solid currentColor}
+.b1{left:5%;background:#ff5f91;color:#ff5f91}.b2{left:20%;background:#7c7cff;color:#7c7cff}.b3{right:18%;background:#ffd36e;color:#ffd36e}.b4{right:4%;background:#6de0cf;color:#6de0cf}
+.flower{position:absolute;font-size:34px;opacity:.8;animation:floatFlower 5s ease-in-out infinite}
+.f1{left:5%;top:15%}.f2{right:5%;top:20%;animation-delay:1.2s}.f3{left:10%;bottom:13%;animation-delay:2s}.f4{right:10%;bottom:11%;animation-delay:.7s}
+@keyframes floatFlower{50%{transform:translateY(-18px) rotate(10deg)}}
+.quote{
+  margin:25px auto 0;max-width:700px;padding:22px 20px;border-left:3px solid #ff6d9f;
+  background:rgba(255,255,255,.045);border-radius:0 18px 18px 0;
+  color:#f6e9ee;font-family:"Playfair Display",serif;font-size:clamp(1.2rem,3.5vw,1.8rem);line-height:1.65
+}
+.compliments{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:28px;text-align:left}
+.compliment{
+  padding:19px;border-radius:20px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);
+  transition:.3s ease
+}
+.compliment:hover{transform:translateY(-4px);background:rgba(255,255,255,.085)}
+.compliment b{display:block;color:#ffe1eb;margin-bottom:7px;font-family:"Playfair Display",serif;font-size:1.15rem}
+.compliment span{color:#d3c6cd;line-height:1.55;font-size:.94rem}
+.memory-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.memory-mini{
+  padding:18px;border-radius:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  text-align:left
+}
+.memory-mini h3{margin:0 0 8px;color:#ffdce8;font-size:1.2rem}
+.memory-mini p{margin:0;color:#cfc2ca;line-height:1.6}
+.final{display:none;margin-top:28px}
+.final.show{display:block}
+.final h2{font-size:clamp(2.1rem,7vw,4.8rem);margin:0}
+.small{font-size:.83rem;color:#a99ca4;margin-top:16px}
+.step-label{margin-bottom:8px;color:#ffc3d8;font-size:.85rem}
+@media(max-width:650px){
+  .card{border-radius:23px;padding:22px 15px}
+  .compliments,.memory-grid{grid-template-columns:1fr}
+  .photo-stage{height:92vw;max-height:470px}
+  .photo{height:80vw;max-height:390px}
+}
+</style>
+</head>
+
+<body>
+<div id="bg"><div class="aurora"></div></div>
+<canvas id="three"></canvas>
+<div class="progress-shell"><div id="progress"></div></div>
+
+<main id="app">
+
+<!-- STEP 1 -->
+<section class="step active" data-step="1">
+  <div class="card">
+    <div class="balloons">
+      <span class="balloon b1"></span><span class="balloon b2"></span>
+      <span class="balloon b3"></span><span class="balloon b4"></span>
+      <span class="flower f1">🌸</span><span class="flower f2">🌼</span>
+      <span class="flower f3">🌷</span><span class="flower f4">🌺</span>
+    </div>
+    <div class="inner">
+      <div class="kicker">एक छोटी-सी दुनिया • सिर्फ तुम्हारे लिए</div>
+      <div class="big-emoji">❤️</div>
+      <div class="name">Jyoti Vishwakarma</div>
+      <h1 class="title">Hey Jyoti,</h1>
+      <p class="lead">
+        आज तुम्हारे जन्मदिन पर तुम्हारे लिए कुछ ऐसा बनाया है,
+        जिसमें हर अगला पल पिछली याद से थोड़ा और खास होगा।
+      </p>
+
+      <div class="photo-stage" data-effect="circle">
+        <img class="photo circle show" src="images/photo1.jpg" alt="Jyoti - photo 1">
+        <img class="photo circle" src="images/photo2.jpg" alt="Jyoti - photo 2">
+        <div class="photo-card">पहली झलक ❤️</div>
+      </div>
+
+      <p class="memory-note">तुम्हारी मुस्कान के लिए बनाई गई यह छोटी-सी शुरुआत।</p>
+      <button class="btn next-btn">चलो शुरू करें ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 -->
+<section class="step" data-step="2">
+  <div class="card">
+    <div class="balloons">
+      <span class="balloon b1"></span><span class="balloon b3"></span>
+      <span class="flower f2">🌸</span><span class="flower f3">🌼</span>
+    </div>
+    <div class="inner">
+      <div class="step-label">दूसरा पड़ाव</div>
+      <div class="big-emoji">🎂</div>
+      <h2 class="title">Happy Birthday, Jyoti!</h2>
+      <p class="lead">
+        आज मेरी प्यारी Jyoti का जन्मदिन है।
+        तुम्हारे आने से दुनिया में एक ऐसी मुस्कान जुड़ी,
+        जिसे शब्दों में पूरा लिख पाना आसान नहीं।
+      </p>
+
+      <div class="photo-stage" data-effect="balloon">
+        <img class="photo show" src="images/photo3.jpg" alt="Jyoti - photo 3">
+        <img class="photo" src="images/photo4.jpg" alt="Jyoti - photo 4">
+        <div class="photo-card">आज का दिन तुम्हारा है 🎈</div>
+      </div>
+
+      <div class="quote">
+        “Wish you many, many returns of the day —
+        तुम्हारी हर नई सुबह पहले से ज्यादा खूबसूरत हो।”
+      </div>
+
+      <button class="btn next-btn">एक और याद देखें 💕</button>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 -->
+<section class="step" data-step="3">
+  <div class="card">
+    <div class="inner">
+      <div class="step-label">तीसरा पड़ाव</div>
+      <h2 class="title">तुम्हारी कुछ खास बातें</h2>
+      <p class="lead">
+        कुछ बातें तारीफ से बड़ी होती हैं; वे बस महसूस की जाती हैं।
+      </p>
+
+      <div class="compliments">
+        <div class="compliment"><b>👀 तुम्हारी आँखें</b><span>इनमें एक ऐसी चमक है जो बिना कुछ कहे भी बहुत कुछ कह देती है।</span></div>
+        <div class="compliment"><b>🎶 तुम्हारी आवाज़</b><span>तुम्हारी आवाज़ सुनते ही बातचीत थोड़ी और अच्छी लगने लगती है।</span></div>
+        <div class="compliment"><b>😊 तुम्हारी मुस्कान</b><span>इसे देखकर चेहरे पर अपने-आप मुस्कान आ जाती है।</span></div>
+        <div class="compliment"><b>✨ तुम्हारा अंदाज़</b><span>तुम जिस तरह खुद को रखती हो, उसमें अपनी अलग पहचान है।</span></div>
+        <div class="compliment"><b>🌷 तुम्हारी बातें</b><span>तुम्हारे साथ बिताया साधारण समय भी याद रखने लायक बन जाता है।</span></div>
+        <div class="compliment"><b>💗 तुम्हारी मौजूदगी</b><span>तुम आसपास हो तो माहौल में एक अलग-सी गर्माहट महसूस होती है।</span></div>
+      </div>
+
+      <div class="photo-stage" data-effect="flower" style="height:min(430px,90vw);margin-top:18px">
+        <img class="photo frame show" src="images/photo5.jpg" alt="Jyoti - photo 5">
+        <img class="photo frame" src="images/photo6.jpg" alt="Jyoti - photo 6">
+        <span class="flower f1">🌸</span><span class="flower f2">🦋</span>
+        <span class="flower f3">🌺</span><span class="flower f4">🌼</span>
+        <div class="photo-card">तुम्हारी अपनी-सी खूबसूरती 🌸</div>
+      </div>
+
+      <button class="btn next-btn">वह वाली याद… 📸</button>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 -->
+<section class="step" data-step="4">
+  <div class="card">
+    <div class="inner">
+      <div class="step-label">चौथा पड़ाव</div>
+      <h2 class="title">वह एक प्यारी-सी बात…</h2>
+
+      <div class="photo-stage" data-effect="polaroid">
+        <img class="photo polaroid show" src="images/photo7.jpg" alt="Jyoti - photo 7">
+        <img class="photo polaroid" src="images/photo8.jpg" alt="Jyoti - photo 8">
+        <div class="photo-card">एक याद, जिसे दोबारा देखना अच्छा लगे ❤️</div>
+      </div>
+
+      <div class="quote">
+        “तू रूठी रूठी सी लगती है,<br>
+        कोई तरकीब बता मनाने की…<br><br>
+        हम ज़िन्दगी निछावर देंगे,<br>
+        तू कीमत बता मुस्कुराने की…!!”
+      </div>
+
+      <p class="lead" style="margin-top:20px">
+        हर खूबसूरत याद की अपनी एक तस्वीर होती है,
+        और कुछ तस्वीरें दिल में ज्यादा देर तक रहती हैं।
+      </p>
+
+      <button class="btn next-btn">अब आखिरी सरप्राइज़ ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 -->
+<section class="step" data-step="5">
+  <div class="card">
+    <div class="balloons">
+      <span class="balloon b1"></span><span class="balloon b2"></span>
+      <span class="balloon b3"></span><span class="balloon b4"></span>
+      <span class="flower f1">🌸</span><span class="flower f2">🌺</span>
+      <span class="flower f3">🌷</span><span class="flower f4">🌼</span>
+    </div>
+    <div class="inner">
+      <div class="step-label">आखिरी पड़ाव</div>
+      <div class="big-emoji">🎂</div>
+      <h2 class="title">My Wish For You</h2>
+
+      <div class="photo-stage" data-effect="final">
+        <img class="photo show" src="images/photo9.jpg" alt="Jyoti - photo 9">
+        <img class="photo" src="images/photo10.jpg" alt="Jyoti - photo 10">
+        <div class="photo-card">सबसे खास याद 💖</div>
+      </div>
+
+      <p class="lead">
+        मेरी दुआ है कि आने वाला साल तुम्हारे लिए सुकून,
+        सफलता, अच्छी सेहत, ढेर सारी खुशियाँ और ऐसे पल लेकर आए
+        जिन्हें तुम हमेशा मुस्कुराकर याद करो।
+      </p>
+
+      <div class="quote">
+        Jyoti, तुम्हारे लिए बस इतना कहना है —
+        <strong>खुश रहो, मुस्कुराती रहो और अपने हर सपने को पूरा करती रहो।</strong>
+      </div>
+
+      <button class="btn" id="celebrate">Celebrate! 🎉</button>
+
+      <div class="final" id="final">
+        <h2 class="title">Happy Birthday, Jyoti! ❤️</h2>
+        <p class="lead">
+          आज का दिन तुम्हारे नाम।<br>
+          तुम्हारी हर मुस्कान को एक नई वजह मिले,
+          और हर आने वाला कल आज से भी सुंदर हो।
+        </p>
+        <div class="quote">
+          “तुम मेरे लिए बहुत खास हो —
+          और तुम्हारा जन्मदिन मेरे लिए भी एक खूबसूरत दिन है।”
+        </div>
+      </div>
+
+      <div class="small">यह छोटा-सा सफर सिर्फ Jyoti Vishwakarma के लिए बनाया गया है।</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+
+.step[data-step="1"] .card,.step[data-step="3"] .card,.step[data-step="4"] .card{
+  background:
+    radial-gradient(circle at 15% 20%,rgba(255,255,255,.18),transparent 22%),
+    radial-gradient(circle at 85% 75%,rgba(255,195,170,.08),transparent 25%),
+    linear-gradient(135deg,rgba(250,242,236,.97),rgba(232,219,211,.94));
+  color:#211a1d;
+  border-color:rgba(80,55,55,.16);
+}
+.step[data-step="1"] .lead,.step[data-step="3"] .lead,.step[data-step="4"] .lead,
+.step[data-step="1"] .memory-note,.step[data-step="3"] .memory-note,.step[data-step="4"] .memory-note{
+  color:#5f5155;
+}
+.step[data-step="1"] .title,.step[data-step="3"] .title,.step[data-step="4"] .title{
+  background:linear-gradient(110deg,#24181d,#6e263f,#b04468,#24181d);
+  background-size:250% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.step[data-step="1"] .kicker,.step[data-step="3"] .step-label,.step[data-step="4"] .step-label{color:#8d3f59}
+.step[data-step="3"] .compliment,.step[data-step="4"] .quote,.step[data-step="1"] .quote{
+  background:rgba(255,255,255,.42);
+  border-color:rgba(110,60,75,.16);
+}
+.step[data-step="3"] .compliment b{color:#542536}
+.step[data-step="3"] .compliment span{color:#66575c}
+.step[data-step="4"] .quote{color:#3c2a31;border-left-color:#9b3c5f}
+
+/* =========================
+   5 STEPS
+========================= */
+let current = 1;
+const total = 5;
+const steps = [...document.querySelectorAll(".step")];
+const progress = document.getElementById("progress");
+
+function animatePhotos(section){
+  const stage = section.querySelector(".photo-stage");
+  if(!stage) return;
+
+  const photos = [...stage.querySelectorAll(".photo")];
+  if(photos.length < 2) return;
+
+  let active = 0;
+  const effect = stage.dataset.effect || "normal";
+
+  function show(i){
+    photos.forEach((p,idx)=>{
+      p.classList.toggle("show",idx===i);
+      gsap.killTweensOf(p);
+    });
+
+    const p = photos[i];
+
+    if(effect === "circle"){
+      gsap.fromTo(p,{scale:.65,rotation:-10,opacity:0},{scale:1,rotation:0,opacity:1,duration:1.2,ease:"back.out(1.7)"});
+    }else if(effect === "balloon"){
+      gsap.fromTo(p,{y:160,scale:.85,opacity:0},{y:0,scale:1,opacity:1,duration:1.15,ease:"back.out(1.5)"});
+    }else if(effect === "flower"){
+      gsap.fromTo(p,{scale:.55,rotation:8,opacity:0},{scale:1,rotation:0,opacity:1,duration:1.2,ease:"power3.out"});
+    }else if(effect === "polaroid"){
+      gsap.fromTo(p,{y:90,rotation:i===0?-7:7,scale:.82,opacity:0},{y:0,rotation:i===0?-3:3,scale:1,opacity:1,duration:1.15,ease:"back.out(1.5)"});
+    }else if(effect === "final"){
+      gsap.fromTo(p,{scale:1.2,opacity:0,rotation:i===0?-2:2},{scale:1,opacity:1,rotation:0,duration:1.3,ease:"power3.out"});
+    }else{
+      gsap.fromTo(p,{y:35,opacity:0},{y:0,opacity:1,duration:1,ease:"power3.out"});
+    }
+  }
+
+  show(active);
+
+  if(stage._timer) clearInterval(stage._timer);
+  stage._timer = setInterval(()=>{
+    active = (active+1)%photos.length;
+    show(active);
+  },4200);
+}
+
+function stopPhotos(section){
+  const stage=section.querySelector(".photo-stage");
+  if(stage && stage._timer) clearInterval(stage._timer);
+}
+
+function goTo(n){
+  if(n<1 || n>total) return;
+  const old=steps[current-1], next=steps[n-1];
+
+  stopPhotos(old);
+
+  gsap.to(old,{
+    opacity:0,scale:.95,y:-20,duration:.35,
+    onComplete:()=>{
+      old.classList.remove("active");
+      next.classList.add("active");
+      gsap.fromTo(next,{opacity:0,scale:1.04,y:28},{opacity:1,scale:1,y:0,duration:.7,ease:"power3.out"});
+      animatePhotos(next);
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+  });
+
+  current=n;
+  progress.style.width=(n/total*100)+"%";
+}
+
+document.querySelectorAll(".next-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>goTo(current+1));
+});
+animatePhotos(steps[0]);
+
+/* =========================
+   BALLOONS
+========================= */
+function launchBalloons(scope){
+  const balloons=[...scope.querySelectorAll(".balloon")];
+  balloons.forEach((b,i)=>{
+    gsap.to(b,{
+      y:-(window.innerHeight+260),
+      x:(i%2?1:-1)*(30+Math.random()*100),
+      duration:7+Math.random()*4,
+      delay:Math.random()*2,
+      repeat:-1,
+      repeatDelay:1.5,
+      ease:"none"
+    });
+  });
+}
+document.querySelectorAll(".balloons").forEach(launchBalloons);
+
+/* =========================
+   POLAROID CURSOR TILT
+========================= */
+const step4=document.querySelector('[data-step="4"]');
+const memoryStage=step4.querySelector(".photo-stage");
+memoryStage.addEventListener("mousemove",(e)=>{
+  const r=memoryStage.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5;
+  const y=(e.clientY-r.top)/r.height-.5;
+  const visible=memoryStage.querySelector(".photo.show");
+  if(visible) gsap.to(visible,{rotateY:x*12,rotateX:-y*12,duration:.25});
+});
+memoryStage.addEventListener("mouseleave",()=>{
+  const visible=memoryStage.querySelector(".photo.show");
+  if(visible) gsap.to(visible,{rotateY:0,rotateX:0,duration:.6});
+});
+
+/* =========================
+   THREE.JS HEARTS
+========================= */
+const canvas=document.getElementById("three");
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,100);
+camera.position.z=18;
+const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+
+function heartGeo(){
+  const s=new THREE.Shape();
+  s.moveTo(0,0);
+  s.bezierCurveTo(-1.2,1.2,-2,.25,-1,-.8);
+  s.bezierCurveTo(-.45,-1.35,0,-1.7,0,-1.7);
+  s.bezierCurveTo(0,-1.7,.45,-1.35,1,-.8);
+  s.bezierCurveTo(2,.25,1.2,1.2,0,0);
+  return new THREE.ExtrudeGeometry(s,{depth:.28,bevelEnabled:true,bevelSegments:2,bevelSize:.07,bevelThickness:.07});
+}
+const hg=heartGeo();
+const colors=[0xff4f91,0xff315d,0xff8db7,0xff6b87ff,0xffc25f];
+const hearts=[];
+for(let i=0;i<24;i++){
+  const m=new THREE.MeshStandardMaterial({color:colors[i%colors.length],roughness:.3,metalness:.12});
+  const h=new THREE.Mesh(hg,m);
+  h.scale.setScalar(.12+Math.random()*.30);
+  h.position.set((Math.random()-.5)*25,(Math.random()-.5)*17,(Math.random()-.5)*11);
+  h.rotation.set(Math.random()*3,Math.random()*3,Math.random()*3);
+  h.userData={x:h.position.x,y:h.position.y,z:h.position.z,s:.25+Math.random()*.7,o:Math.random()*6.28};
+  scene.add(h);hearts.push(h);
+}
+scene.add(new THREE.AmbientLight(0xffffff,1.35));
+const light=new THREE.PointLight(0xff5a97,3.2,45);
+light.position.set(0,4,9);scene.add(light);
+
+const clock=new THREE.Clock();
+function render(){
+  requestAnimationFrame(render);
+  const t=clock.getElapsedTime();
+  hearts.forEach(h=>{
+    const d=h.userData;
+    h.position.x=d.x+Math.sin(t*d.s+d.o)*.45;
+    h.position.y=d.y+Math.sin(t*d.s*.8+d.o)*.55;
+    h.rotation.x+=.0015;h.rotation.y+=.002;
+  });
+  renderer.render(scene,camera);
+}
+render();
+
+addEventListener("resize",()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+
+/* =========================
+   GRAND FINALE
+========================= */
+let done=false;
+document.getElementById("celebrate").addEventListener("click",()=>{
+  if(done)return; done=true;
+  const btn=document.getElementById("celebrate");
+  btn.disabled=true;
+  gsap.to(btn,{opacity:0,scale:.7,duration:.45});
+
+  const final=document.getElementById("final");
+  final.classList.add("show");
+  gsap.fromTo(final,{opacity:0,y:40},{opacity:1,y:0,duration:1.2,delay:.3,ease:"power3.out"});
+
+  hearts.forEach((h,i)=>{
+    const a=i/hearts.length*Math.PI*2;
+    const dist=11+Math.random()*11;
+    gsap.to(h.position,{
+      x:Math.cos(a)*dist,
+      y:10+Math.sin(a)*dist,
+      z:h.position.z+8,
+      duration:3.4+Math.random()*1.5,
+      delay:Math.random()*.5,
+      ease:"power2.inOut"
+    });
+    gsap.to(h.scale,{x:0,y:0,z:0,duration:2.8,delay:2});
+  });
+
+  setTimeout(()=>{
+    confetti({particleCount:180,angle:60,spread:75,origin:{x:0,y:1}});
+    confetti({particleCount:180,angle:120,spread:75,origin:{x:1,y:1}});
+  },200);
+
+  const end=Date.now()+5000;
+  (function shower(){
+    confetti({particleCount:6,angle:90,spread:110,startVelocity:18,gravity:.72,scalar:.9,origin:{x:Math.random(),y:0}});
+    if(Date.now()<end)requestAnimationFrame(shower);
+  })();
+
+  let count=0;
+  const timer=setInterval(()=>{
+    ["❤️","🌸","✨","🎈"].forEach(symbol=>{
+      confetti({
+        particleCount:1,scalar:1.8,
+        shapes:[confetti.shapeFromText({text:symbol,scalar:2})],
+        origin:{x:Math.random(),y:0}
+      });
+    });
+    count++;
+    if(count>42)clearInterval(timer);
+  },110);
+
+  setTimeout(()=>{
+    confetti({particleCount:240,spread:135,startVelocity:44,origin:{x:.5,y:.55}});
+  },1800);
+});
+</script>
+</body>
+</html>
